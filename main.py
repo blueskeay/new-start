@@ -247,12 +247,18 @@ def enhanced_demo():
     
     # 获取数据（这里用示例数据代替）
     stocks_data = model.get_realtime_limit_up_stocks()
+    print("数据1")
+    print(stocks_data)
     
     # 批量分析
     results = model.batch_analyze(stocks_data)
+    print("数据2")
+    print(reults)
     
     # 按强度排序
     sorted_results = results.sort_values('开盘涨幅点数', ascending=False)
+    print("数据3")
+    print(sorted_results)
     
     print("🔥 重点关注股票 (L5及以上):")
     strong_stocks = sorted_results[sorted_results['强度等级'].isin(['L5', 'L7', 'L9'])]
