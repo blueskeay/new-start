@@ -4,6 +4,7 @@ import numpy as np
 import akshare as ak  # 需要安装: pip install akshare
 from typing import Dict, List, Tuple, Optional, Union
 import yaml
+import requests
 
 from datetime import datetime, timedelta
 import warnings
