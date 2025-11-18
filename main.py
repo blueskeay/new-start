@@ -371,7 +371,12 @@ if __name__ == "__main__":
     # 运行增强版演示
     enhanced_demo()
     wework_url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=8f4856d7-f3fa-470f-8b3b-b821efa2e8d8"
-    report_data = "test"
+    report_data = {
+        "stats": [],
+        "new_titles": "这是标题",
+        "failed_ids": [],
+        "total_new_count": 1,
+    }
     results["wework"] = send_to_wework(
             wework_url, report_data, report_type
         )
