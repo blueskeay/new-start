@@ -258,7 +258,7 @@ def enhanced_demo():
     strong_stocks = sorted_results[sorted_results['强度等级'].isin(['L5', 'L7', 'L9'])]
     datas = []
     for _, stock in strong_stocks.iterrows():
-        data = f"{stock['股票名称']}: {stock['强度等级']} ({stock['开盘涨幅点数']}点) - {stock['建议操作']}")
+        data = f"{stock['股票名称']}: {stock['强度等级']} ({stock['开盘涨幅点数']}点) - {stock['建议操作']}"
         print(data)
         datas.append(data)
     return '\n'.join(datas)
