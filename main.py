@@ -246,7 +246,7 @@ def enhanced_demo():
     model = EnhancedLimitUpModel()
     
     # 获取数据（这里用示例数据代替）
-    stocks_data = generate_sample_data()
+    stocks_data = model.get_realtime_limit_up_stocks()
     
     # 批量分析
     results = model.batch_analyze(stocks_data)
@@ -256,9 +256,12 @@ def enhanced_demo():
     
     print("🔥 重点关注股票 (L5及以上):")
     strong_stocks = sorted_results[sorted_results['强度等级'].isin(['L5', 'L7', 'L9'])]
+    datas = []
     for _, stock in strong_stocks.iterrows():
-        print(f"{stock['股票名称']}: {stock['强度等级']} ({stock['开盘涨幅点数']}点) - {stock['建议操作']}")
-
+        data = f"{stock['股票名称']}: {stock['强度等级']} ({stock['开盘涨幅点数']}点) - {stock['建议操作']}")
+        print(data)
+        datas.append(data)
+    return '\n'.join(datas)
 
 def generate_sample_data():
     """
@@ -350,9 +353,9 @@ def main():
 if __name__ == "__main__":
     main()
     # 运行增强版演示
-    enhanced_demo()
+    report_data = enhanced_demo()
     wework_url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=8f4856d7-f3fa-470f-8b3b-b821efa2e8d8"
-    report_data = "# 标题 \n 内容"
+    # report_data = "# 标题 \n 内容"
     report_type: str = "当日汇总"
     send_to_wework(
             wework_url, report_data, report_type
