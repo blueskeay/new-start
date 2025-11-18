@@ -25,7 +25,7 @@ def load_config():
 
 def send_to_wework(
     webhook_url: str,
-    report_data: Dict,
+    report_data: str,
     report_type: str,
     update_info: Optional[Dict] = None,
     proxy_url: Optional[str] = None,
@@ -37,51 +37,31 @@ def send_to_wework(
     if proxy_url:
         proxies = {"http": proxy_url, "https": proxy_url}
 
-    # 获取分批内容
-    batches = split_content_into_batches(report_data, "wework", update_info, mode=mode)
+   payload = {"msgtype": "markdown", "markdown": {"content": report_data}}
 
-    print(f"企业微信消息分为 {len(batches)} 批次发送 [{report_type}]")
-
-    # 逐批发送
-    for i, batch_content in enumerate(batches, 1):
-        batch_size = len(batch_content.encode("utf-8"))
-        print(
-            f"发送企业微信第 {i}/{len(batches)} 批次，大小：{batch_size} 字节 [{report_type}]"
+    try:
+        response = requests.post(
+            webhook_url, headers=headers, json=payload, proxies=proxies, timeout=30
         )
-
-        # 添加批次标识
-        if len(batches) > 1:
-            batch_header = f"**[第 {i}/{len(batches)} 批次]**\n\n"
-            batch_content = batch_header + batch_content
-
-        payload = {"msgtype": "markdown", "markdown": {"content": batch_content}}
-
-        try:
-            response = requests.post(
-                webhook_url, headers=headers, json=payload, proxies=proxies, timeout=30
-            )
-            if response.status_code == 200:
-                result = response.json()
-                if result.get("errcode") == 0:
-                    print(f"企业微信第 {i}/{len(batches)} 批次发送成功 [{report_type}]")
-                    # 批次间间隔
-                    if i < len(batches):
-                        time.sleep(CONFIG["BATCH_SEND_INTERVAL"])
-                else:
-                    print(
-                        f"企业微信第 {i}/{len(batches)} 批次发送失败 [{report_type}]，错误：{result.get('errmsg')}"
-                    )
-                    return False
+        if response.status_code == 200:
+            result = response.json()
+            if result.get("errcode") == 0:
+                print(f"企业微信发送成功 [{report_type}]")
             else:
                 print(
-                    f"企业微信第 {i}/{len(batches)} 批次发送失败 [{report_type}]，状态码：{response.status_code}"
+                    f"企业微信发送失败 [{report_type}]，错误：{result.get('errmsg')}"
                 )
                 return False
-        except Exception as e:
-            print(f"企业微信第 {i}/{len(batches)} 批次发送出错 [{report_type}]：{e}")
+        else:
+            print(
+                f"企业微信发送失败 [{report_type}]，状态码：{response.status_code}"
+            )
             return False
+    except Exception as e:
+        print(f"企业微信发送出错 [{report_type}]：{e}")
+        return False
 
-    print(f"企业微信所有 {len(batches)} 批次发送完成 [{report_type}]")
+    print(f"企业微信发送完成 [{report_type}]")
     return True
 
 class LimitUpStrengthModel:
@@ -372,12 +352,7 @@ if __name__ == "__main__":
     # 运行增强版演示
     enhanced_demo()
     wework_url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=8f4856d7-f3fa-470f-8b3b-b821efa2e8d8"
-    report_data = {
-        "stats": [],
-        "new_titles": "这是标题",
-        "failed_ids": [],
-        "total_new_count": 1,
-    }
+    report_data = "#标题 \n 内容"
     results["wework"] = send_to_wework(
             wework_url, report_data, report_type
         )
