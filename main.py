@@ -7,6 +7,19 @@ from datetime import datetime, timedelta
 import warnings
 warnings.filterwarnings('ignore')
 
+# === 配置管理 ===
+def load_config():
+    """加载配置文件"""
+    config_path = "config/config.yaml"
+
+    if not Path(config_path).exists():
+        raise FileNotFoundError(f"配置文件 {config_path} 不存在")
+
+    with open(config_path, "r", encoding="utf-8") as f:
+        config_data = yaml.safe_load(f)
+
+    print(f"配置文件加载成功: {config_path}, {config_data}")
+
 class LimitUpStrengthModel:
     """
     连板强度模型
