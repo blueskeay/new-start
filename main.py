@@ -253,7 +253,7 @@ def enhanced_demo():
     # 批量分析
     results = model.batch_analyze(stocks_data)
     print("数据2")
-    print(reults)
+    print(results)
     
     # 按强度排序
     sorted_results = results.sort_values('开盘涨幅点数', ascending=False)
@@ -357,7 +357,7 @@ def main():
     print("=" * 60)
 
 if __name__ == "__main__":
-    main()
+    # main()
     # 运行增强版演示
     report_data = enhanced_demo()
     wework_url = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=8f4856d7-f3fa-470f-8b3b-b821efa2e8d8"
