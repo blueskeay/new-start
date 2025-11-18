@@ -37,8 +37,8 @@ def send_to_wework(
     if proxy_url:
         proxies = {"http": proxy_url, "https": proxy_url}
 
-   payload = {"msgtype": "markdown", "markdown": {"content": report_data}}
-
+    payload = {"msgtype": "markdown", "markdown": {"content": report_data}}
+    
     try:
         response = requests.post(
             webhook_url, headers=headers, json=payload, proxies=proxies, timeout=30
@@ -60,7 +60,7 @@ def send_to_wework(
     except Exception as e:
         print(f"企业微信发送出错 [{report_type}]：{e}")
         return False
-
+    
     print(f"企业微信发送完成 [{report_type}]")
     return True
 
