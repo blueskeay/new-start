@@ -6,6 +6,8 @@ from typing import Dict, List, Tuple, Optional, Union
 import yaml
 import requests
 
+from analyze.LimitUpStrengthModel import LimitUpStrengthModel
+
 from datetime import datetime, timedelta
 import warnings
 warnings.filterwarnings('ignore')
@@ -357,6 +359,8 @@ def main():
     print("=" * 60)
 
 if __name__ == "__main__":
+    model = LimitUpStrengthModel()
+    model.show_datas()
     # main()
     # 运行增强版演示
     report_data = enhanced_demo()
